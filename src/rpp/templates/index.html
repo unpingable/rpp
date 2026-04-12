@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RPP — Subject Index</title>
+<style>
+  :root { --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #ddd; --card-bg: #fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1a1a1a; --fg: #e0e0e0; --muted: #999; --border: #333; --card-bg: #242424; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace; font-size: 14px;
+         background: var(--bg); color: var(--fg); max-width: 900px; margin: 0 auto; padding: 2rem; }
+  h1 { font-size: 1.3rem; margin-bottom: 0.3rem; }
+  .subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.85rem; }
+  .subject-card { background: var(--card-bg); border: 1px solid var(--border); padding: 1rem;
+                  margin-bottom: 0.75rem; text-decoration: none; display: block; color: var(--fg); }
+  .subject-card:hover { border-color: var(--fg); }
+  .subject-ref { font-weight: bold; word-break: break-all; }
+  .counts { color: var(--muted); margin-top: 0.4rem; font-size: 0.85rem; }
+  .counts span { margin-right: 1rem; }
+</style>
+</head>
+<body>
+  <h1>RPP Subject Index</h1>
+  <p class="subtitle">Receipts and reviewability overlay — subject-centric view</p>
+
+  {% if subjects %}
+    {% for s in subjects %}
+    <a class="subject-card" href="/subject?ref={{ quote(s.ref) }}">
+      <div class="subject-ref">{{ s.ref }}</div>
+      <div class="counts">
+        {% for kind, count in s.counts.items() %}
+          <span>{{ kind }}: {{ count }}</span>
+        {% endfor %}
+        <span>({{ s.total }} total)</span>
+      </div>
+    </a>
+    {% endfor %}
+  {% else %}
+    <p>No records loaded.</p>
+  {% endif %}
+</body>
+</html>
