@@ -23,6 +23,7 @@ Four record types (claim, attestation, action, challenge) published as custom AT
 ```bash
 pip install -e ".[dev]"
 pytest
+rpp-viewer  # http://localhost:8400
 ```
 
 ## Project Structure
@@ -30,7 +31,10 @@ pytest
 - `lexicons/` — ATProto lexicon definitions (zone.neutral.rpp.*)
 - `examples/` — Example records and subject-chain walkthrough
 - `docs/` — Architecture, operator API spec, gap specs, archived prior-art specs
-- `src/` — Rust kernel (receipt engine) + Python service layer (TBD)
+- `src/rpp/` — Python package: subject-state index, loader, Flask viewer
+- `src/rpp/index.py` — Kernel boundary: Record, normalize, SubjectIndex
+- `src/rpp/loader.py` — I/O adapters (JSON dir, NDJSON)
+- `src/rpp/app.py` — Flask viewer (subject pages, debug JSON endpoints)
 - `tests/` — pytest suite
 
 ## Conventions

@@ -51,9 +51,19 @@ PDS operators and labeler operators can contribute bounded attestations via a PO
 
 See [docs/operator-attestation-api.md](docs/operator-attestation-api.md) for the integration surface.
 
+## Quick start
+
+```bash
+pip install -e ".[dev]"
+rpp-viewer
+# visit http://localhost:8400
+```
+
+The viewer loads example records from `examples/`, indexes them by subject, and serves a subject-centric chain view. Try the subject page for `at://did:plc:alice/app.bsky.feed.post/3abc123` to see a full claim → action → challenge flow.
+
 ## Status
 
-Early design. The object model, lexicons, and example records exist. The kernel, service, and renderer do not yet.
+Early. The object model, lexicons, example records, subject-state index, and a working subject-chain viewer exist. The Rust kernel, full service layer, and operator attestation ingress do not yet.
 
 ## License
 
