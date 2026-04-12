@@ -15,10 +15,15 @@
             "format": "did",
             "description": "DID of the entity filing this challenge."
           },
+          "subject": {
+            "type": "ref",
+            "ref": "zone.neutral.rpp.claim#subject",
+            "description": "The ultimate subject of this dispute. Same structure as claim/attestation/action subjects."
+          },
           "targetRef": {
             "type": "string",
             "format": "at-uri",
-            "description": "The RPP record being challenged (claim, attestation, or action)."
+            "description": "The specific RPP record being challenged (claim, attestation, or action)."
           },
           "grounds": {
             "type": "array",

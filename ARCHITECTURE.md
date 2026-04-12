@@ -75,7 +75,7 @@ Actions always point back to a claim or attestation chain. No floating punishmen
 
 ### Challenge
 
-A first-class dispute object.
+A first-class dispute object. Carries both `subject` (the ultimate subject of the dispute) and `targetRef` (the specific record being challenged).
 
 - wrong subject
 - wrong evidence class
@@ -84,7 +84,7 @@ A first-class dispute object.
 - standing disputed
 - action disproportionate
 
-Challenges modify interpretation, not object existence. That's the invariant.
+Challenges modify interpretation, not object existence. That's the invariant. The explicit `subject` field means challenges index to subjects directly — no heuristic ref-chasing needed.
 
 ## State model
 

@@ -90,6 +90,7 @@ Alice disagrees with Watchtower's claim. She publishes an RPP challenge:
 {
   "$type": "zone.neutral.rpp.challenge",
   "challenger": "did:plc:alice",
+  "subject": {"subjectType": "at-uri", "value": "at://did:plc:alice/app.bsky.feed.post/3abc123"},
   "targetRef": "at://did:plc:labeler-watchtower/zone.neutral.rpp.claim/3claim900",
   "grounds": ["insufficient_evidence", "counterevidence_available"],
   "body": "The cited preprint was retracted for methodology issues unrelated to my claim. My data comes from the NEJM Phase III trial.",

@@ -8,14 +8,15 @@ from urllib.parse import quote, unquote
 
 from flask import Flask, render_template, request, jsonify, abort
 
-from rpp.loader import load_records, SubjectIndex
+from rpp.index import SubjectIndex
+from rpp.loader import load_json_dir
 
 EXAMPLES_DIR = Path(__file__).resolve().parent.parent.parent / "examples"
 
 
 def create_app(examples_dir: Path | None = None) -> Flask:
     app = Flask(__name__, template_folder=str(Path(__file__).parent / "templates"))
-    index = load_records(examples_dir or EXAMPLES_DIR)
+    index = load_json_dir(examples_dir or EXAMPLES_DIR)
 
     # Make helpers available in templates
     @app.context_processor

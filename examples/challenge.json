@@ -1,6 +1,10 @@
 {
   "$type": "zone.neutral.rpp.challenge",
   "challenger": "did:plc:alice",
+  "subject": {
+    "subjectType": "at-uri",
+    "value": "at://did:plc:alice/app.bsky.feed.post/3abc123"
+  },
   "targetRef": "at://did:plc:labeler-watchtower/zone.neutral.rpp.claim/3claim900",
   "grounds": [
     "insufficient_evidence",
