@@ -1,0 +1,25 @@
+{
+  "$type": "zone.neutral.rpp.claim",
+  "issuer": "did:plc:labeler-watchtower",
+  "subject": {
+    "subjectType": "at-uri",
+    "value": "at://did:plc:alice/app.bsky.feed.post/3abc123"
+  },
+  "claimType": "classification",
+  "value": {
+    "polarity": "cautionary",
+    "domain": "public_health",
+    "summary": "Post contains misleading context about vaccine efficacy. Source data is from a retracted preprint."
+  },
+  "evidenceClass": "direct_observation",
+  "confidence": 7200,
+  "evidenceRefs": [
+    "https://retracted.example/paper-123",
+    "at://did:plc:labeler-watchtower/zone.neutral.rpp.claim/evidence-bundle-001"
+  ],
+  "policyRef": "at://did:plc:labeler-watchtower/zone.neutral.rpp.claim/policy-v12",
+  "supersedes": [],
+  "status": "active",
+  "expiresAt": "2026-04-19T03:17:00Z",
+  "createdAt": "2026-04-12T03:17:00Z"
+}

@@ -1,0 +1,17 @@
+{
+  "$type": "zone.neutral.rpp.challenge",
+  "challenger": "did:plc:alice",
+  "targetRef": "at://did:plc:labeler-watchtower/zone.neutral.rpp.claim/3claim900",
+  "grounds": [
+    "insufficient_evidence",
+    "counterevidence_available"
+  ],
+  "body": "The cited preprint was retracted for methodology issues unrelated to the specific claim in my post. The efficacy data I referenced comes from the Phase III trial published in NEJM, not the preprint. The labeler's evidence bundle does not address this distinction.",
+  "evidenceRefs": [
+    "https://nejm.example/phase3-trial-456"
+  ],
+  "requestedRemedy": "withdraw_claim",
+  "status": "open",
+  "resolutionRef": null,
+  "createdAt": "2026-04-12T03:18:00Z"
+}

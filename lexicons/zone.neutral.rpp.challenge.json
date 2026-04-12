@@ -1,0 +1,80 @@
+{
+  "lexicon": 1,
+  "id": "zone.neutral.rpp.challenge",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A first-class dispute. Challenges modify interpretation, not object existence.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["challenger", "targetRef", "grounds", "createdAt"],
+        "properties": {
+          "challenger": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the entity filing this challenge."
+          },
+          "targetRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The RPP record being challenged (claim, attestation, or action)."
+          },
+          "grounds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "knownValues": [
+                "wrong_subject",
+                "wrong_evidence_class",
+                "insufficient_evidence",
+                "scope_exceeded",
+                "ttl_expired",
+                "standing_disputed",
+                "action_disproportionate",
+                "factual_error",
+                "counterevidence_available"
+              ]
+            },
+            "description": "Basis for the challenge."
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 5000,
+            "description": "Human-readable explanation of the challenge."
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {"type": "string", "format": "uri"},
+            "description": "Counter-evidence or supporting material."
+          },
+          "requestedRemedy": {
+            "type": "string",
+            "knownValues": [
+              "withdraw_claim",
+              "revoke_attestation",
+              "reverse_action",
+              "amend_confidence",
+              "narrow_scope"
+            ],
+            "description": "What the challenger wants to happen."
+          },
+          "status": {
+            "type": "string",
+            "knownValues": ["open", "answered", "upheld", "rejected", "superseded"],
+            "default": "open"
+          },
+          "resolutionRef": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "Reference to the record that resolved this challenge."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

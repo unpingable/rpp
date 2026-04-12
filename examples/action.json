@@ -1,0 +1,18 @@
+{
+  "$type": "zone.neutral.rpp.action",
+  "issuer": "did:plc:feedsvc-mainfeed",
+  "subject": {
+    "subjectType": "at-uri",
+    "value": "at://did:plc:alice/app.bsky.feed.post/3abc123"
+  },
+  "actionType": "content_hidden",
+  "causeRefs": [
+    "at://did:plc:labeler-watchtower/zone.neutral.rpp.claim/3claim900"
+  ],
+  "scope": "Hidden from guest and logged-in default feed views. Still accessible via direct link and author profile.",
+  "policyRef": "at://did:plc:feedsvc-mainfeed/zone.neutral.rpp.action/policy-v8",
+  "reversible": true,
+  "supersedes": [],
+  "status": "active",
+  "createdAt": "2026-04-12T03:17:12Z"
+}

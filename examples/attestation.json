@@ -1,0 +1,18 @@
+{
+  "$type": "zone.neutral.rpp.attestation",
+  "issuer": "did:plc:pds-operator-indie",
+  "subject": {
+    "subjectType": "did",
+    "value": "did:plc:suspect-account"
+  },
+  "attestationType": "batch_creation_pattern",
+  "basis": "operator_telemetry",
+  "scope": "15 accounts created within same 60s window from same signup flow. This attestation covers temporal clustering only; it does not assert coordinated behavior or intent.",
+  "confidence": "medium",
+  "issuerRole": "operator",
+  "relatedClaims": [],
+  "supersedes": [],
+  "status": "active",
+  "expiresAt": "2026-07-12T14:00:00Z",
+  "createdAt": "2026-04-12T14:00:00Z"
+}

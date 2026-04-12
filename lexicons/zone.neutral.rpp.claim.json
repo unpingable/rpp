@@ -1,0 +1,116 @@
+{
+  "lexicon": 1,
+  "id": "zone.neutral.rpp.claim",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A non-sovereign assertion about a subject. Says what the issuer thinks is true. Nothing more.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["issuer", "subject", "claimType", "evidenceClass", "createdAt"],
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the entity making this claim."
+          },
+          "subject": {
+            "type": "ref",
+            "ref": "#subject",
+            "description": "What or who this claim is about."
+          },
+          "claimType": {
+            "type": "string",
+            "description": "Kind of claim: classification, provenance, behavioral_observation, identity_linkage, policy_violation, authenticity."
+          },
+          "value": {
+            "type": "union",
+            "refs": ["#claimValue"],
+            "description": "Typed claim content. Domain-specific."
+          },
+          "evidenceClass": {
+            "type": "string",
+            "knownValues": [
+              "self_report",
+              "direct_observation",
+              "linked_public_record",
+              "external_archive",
+              "operator_attestation",
+              "inference",
+              "unknown"
+            ],
+            "description": "What kind of footing this claim rests on."
+          },
+          "confidence": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "Confidence in basis points (7200 = 72%). Ambiguity is real and floats are goblins."
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {"type": "string", "format": "uri"},
+            "description": "References to supporting evidence (CIDs, AT-URIs, external URLs)."
+          },
+          "policyRef": {
+            "type": "string",
+            "format": "uri",
+            "description": "Reference to the policy under which this claim was made."
+          },
+          "supersedes": {
+            "type": "array",
+            "items": {"type": "string", "format": "at-uri"},
+            "description": "Prior claim records this one replaces."
+          },
+          "status": {
+            "type": "string",
+            "knownValues": ["active", "withdrawn", "superseded"],
+            "default": "active"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When this claim should be considered expired."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "required": ["subjectType", "value"],
+      "properties": {
+        "subjectType": {
+          "type": "string",
+          "knownValues": ["did", "at-uri", "uri", "blob-ref", "external"]
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "claimValue": {
+      "type": "object",
+      "description": "Open-ended typed claim body. Structure depends on claimType.",
+      "properties": {
+        "polarity": {
+          "type": "string",
+          "knownValues": ["cautionary", "affirmative", "neutral"]
+        },
+        "domain": {
+          "type": "string",
+          "description": "Domain of the claim (e.g., public_health, authenticity, spam)."
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Human-readable summary of the claim."
+        }
+      }
+    }
+  }
+}

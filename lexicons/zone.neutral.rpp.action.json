@@ -1,0 +1,75 @@
+{
+  "lexicon": 1,
+  "id": "zone.neutral.rpp.action",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A concrete consequence event. If consequence changed, authorship must remain attached.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["issuer", "subject", "actionType", "causeRefs", "createdAt"],
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the entity that took this action. The actor that actually changed something."
+          },
+          "subject": {
+            "type": "ref",
+            "ref": "zone.neutral.rpp.claim#subject",
+            "description": "What or who this action was taken on."
+          },
+          "actionType": {
+            "type": "string",
+            "knownValues": [
+              "label_applied",
+              "label_removed",
+              "content_hidden",
+              "content_restored",
+              "account_limited",
+              "account_restored",
+              "report_forwarded",
+              "claim_marked_inadmissible",
+              "record_archived"
+            ],
+            "description": "What was actually done."
+          },
+          "causeRefs": {
+            "type": "array",
+            "items": {"type": "string", "format": "at-uri"},
+            "description": "Claims, attestations, or other objects that led to this action. No floating punishments."
+          },
+          "scope": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Where and how this action applies (which view, which audience, what duration)."
+          },
+          "policyRef": {
+            "type": "string",
+            "format": "uri",
+            "description": "Reference to the policy under which this action was taken."
+          },
+          "reversible": {
+            "type": "boolean",
+            "description": "Whether this action can be undone."
+          },
+          "supersedes": {
+            "type": "array",
+            "items": {"type": "string", "format": "at-uri"},
+            "description": "Prior action records this one replaces."
+          },
+          "status": {
+            "type": "string",
+            "knownValues": ["active", "reversed", "superseded"],
+            "default": "active"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

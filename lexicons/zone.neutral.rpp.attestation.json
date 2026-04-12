@@ -1,0 +1,90 @@
+{
+  "lexicon": 1,
+  "id": "zone.neutral.rpp.attestation",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A scoped, privileged input from a party with declared standing. Attestations are inputs, not final judgments.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["issuer", "subject", "attestationType", "basis", "scope", "confidence", "createdAt"],
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "format": "did",
+            "description": "DID of the attesting entity."
+          },
+          "subject": {
+            "type": "ref",
+            "ref": "zone.neutral.rpp.claim#subject",
+            "description": "What or who this attestation is about."
+          },
+          "attestationType": {
+            "type": "string",
+            "knownValues": [
+              "batch_creation_pattern",
+              "account_recovery_event",
+              "operator_review_complete",
+              "content_authenticity",
+              "service_relationship",
+              "snapshot_verification",
+              "policy_application"
+            ],
+            "description": "What is being attested."
+          },
+          "basis": {
+            "type": "string",
+            "knownValues": [
+              "operator_telemetry",
+              "direct_observation",
+              "external_archive",
+              "moderation_review",
+              "automated_analysis"
+            ],
+            "description": "Evidence class underlying this attestation."
+          },
+          "scope": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Human-readable description of what exactly is being attested and what is not."
+          },
+          "confidence": {
+            "type": "string",
+            "knownValues": ["low", "medium", "high"],
+            "description": "Confidence level."
+          },
+          "issuerRole": {
+            "type": "string",
+            "knownValues": ["operator", "moderation_service", "archive", "witness", "individual", "other"],
+            "description": "Declared standing of the issuer."
+          },
+          "relatedClaims": {
+            "type": "array",
+            "items": {"type": "string", "format": "at-uri"},
+            "description": "RPP claims this attestation relates to or supports."
+          },
+          "supersedes": {
+            "type": "array",
+            "items": {"type": "string", "format": "at-uri"},
+            "description": "Prior attestation records this one replaces."
+          },
+          "status": {
+            "type": "string",
+            "knownValues": ["active", "revoked", "superseded", "expired"],
+            "default": "active"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "TTL. No eternal stink clouds."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}
