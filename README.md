@@ -2,54 +2,45 @@
 
 A receipts and reviewability overlay for ATProto.
 
-## What it does
+## The problem
 
-RPP gives governance-relevant claims first-class structure, then renders them as governance objects rather than ordinary social content. It does not replace ATProto and does not try to solve trust by fiat.
+Someone labels your post on Bluesky. Your reach drops. You don't know who made the claim, what evidence they had, or whether anyone reviewed it. You can't see the chain of reasoning. You can't dispute it. The label just... is.
 
-Four record types:
+On the other side: an operator notices a batch of accounts created in the same minute. They flag it internally, but that signal lives in a private log. Nobody outside the operator can see it, reference it, or challenge it. If a downstream service acts on it, there's no visible link between the signal and the consequence.
 
-- **Claim** — a non-sovereign assertion about a subject (classification, provenance note, behavioral observation)
-- **Attestation** — a scoped, privileged input from a party with declared standing (PDS operator, labeler, archive)
-- **Action** — a concrete consequence event (label applied, content hidden, report forwarded)
-- **Challenge** — a first-class dispute (wrong evidence class, scope exceeded, standing disputed)
+Moderation decisions happen. Consequences land. But the *receipts* — who said what, on what basis, with what effect — are invisible, inconsistent, or locked inside the platform that made the call.
 
-These publish as custom ATProto lexicon records under `zone.neutral.rpp.*`, consumed through a dedicated service layer, and rendered subject-centrically — so you can look up any DID or AT-URI and see the full chain of claims, attestations, actions, and challenges in one place.
+## What RPP does
 
-## What this is not
+RPP publishes governance decisions as structured, reviewable ATProto records. Four record types:
 
-- Not a new social protocol or ATProto replacement
-- Not a moderation oracle or trust-score system
-- Not a universal witness ledger — ATProto relays are non-archival
-- Not beholden to any single platform operator
+- **Claim** — someone says something about a subject ("this post cites a retracted study")
+- **Attestation** — an operator contributes a scoped signal ("these accounts were created together")
+- **Action** — a service makes something happen ("post hidden from default feed")
+- **Challenge** — someone disputes a claim or action ("that study wasn't retracted for the reason you say")
+
+Claims don't self-execute. Actions point back to the claims that caused them. Challenges are first-class objects, not support tickets. Nothing gets silently edited — old records stay visible as superseded, not deleted.
+
+The result: for any post, account, or URI, you can pull up the full chain — who claimed what, who acted on it, who disputed it, and what the current state is.
+
+**[See the full story in one walkthrough.](examples/subject-chain.md)** A post gets published, labeled, hidden, attested, and challenged — five steps, all legible.
 
 ## Why third-party
 
-If Bluesky built this, the layer would always be under pressure to become a house view, a liability shield, or a trust-and-safety accessory pretending not to be one. Third-party means:
+If Bluesky built this, it would always be under pressure to become a house view or a liability shield. Third-party means:
 
 - No obligation to harmonize with platform incentives
-- Standing is made visible, not inherited as authority by default
-- Corrections, disputes, and ugly edge cases can be shown honestly
-- Operator attestations stay typed and contestable, not portable truth
+- Standing is visible, not inherited as default authority
+- Corrections and ugly edge cases can be shown honestly
+- Operator signals stay typed and contestable, not portable truth
 
 ## Architecture
 
-ATProto provides identity, publication, and distribution. RPP provides claim structure, provenance, supersession, challenge paths, and subject-centric rendering on top.
+ATProto handles identity, publication, and distribution. RPP adds claim structure, provenance, challenge paths, and subject-centric rendering on top.
 
-Five layers:
+Five layers: publish (ATProto records) → ingest (firehose, operator API, adapters) → kernel (Rust validation and indexing) → service (Python API) → render (subject-centric web views).
 
-1. **Publish** — ATProto repos with RPP lexicon records
-2. **Ingest** — Jetstream / firehose / direct repo reads / operator attestation API
-3. **Kernel** — Rust receipt engine (validate, normalize, index relations, derive subject state)
-4. **Service** — Python API (query, publish helpers, auth, archiver)
-5. **Render** — Web UI / AppView for subject-centric governance views
-
-See [ARCHITECTURE.md](ARCHITECTURE.md) for details.
-
-## Operator integration
-
-PDS operators and labeler operators can contribute bounded attestations via a POST API without publishing custom records themselves. Attestations are stored as first-class objects, never rendered as profile badges or portable caste markers.
-
-See [docs/operator-attestation-api.md](docs/operator-attestation-api.md) for the integration surface.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the full picture.
 
 ## Quick start
 
@@ -59,7 +50,18 @@ rpp-viewer
 # visit http://localhost:8400
 ```
 
-The viewer loads example records from `examples/`, indexes them by subject, and serves a subject-centric chain view. Try the subject page for `at://did:plc:alice/app.bsky.feed.post/3abc123` to see a full claim → action → challenge flow.
+The viewer loads example records, indexes them by subject, and serves a chain view. Try the subject page for `at://did:plc:alice/app.bsky.feed.post/3abc123` to see a claim → action → challenge flow.
+
+## Reading order
+
+1. **This README** — the problem and the shape of the solution
+2. **[examples/subject-chain.md](examples/subject-chain.md)** — one complete lifecycle, start to finish
+3. **[ARCHITECTURE.md](ARCHITECTURE.md)** — record types, state model, ingest paths, trust boundaries
+4. Then, depending on what you're building:
+   - Integrating operator signals? → [docs/operator-attestation-api.md](docs/operator-attestation-api.md)
+   - Importing from existing systems (Ozone, labelers)? → [docs/PROVENANCE-AND-ADAPTERS.md](docs/PROVENANCE-AND-ADAPTERS.md)
+   - Understanding the design philosophy? → [docs/RATIONALE.md](docs/RATIONALE.md)
+   - Open problems (federation, archival)? → [docs/gaps/](docs/gaps/)
 
 ## Status
 
