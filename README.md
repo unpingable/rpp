@@ -25,6 +25,22 @@ The result: for any post, account, or URI, you can pull up the full chain — wh
 
 **[See the full story in one walkthrough.](examples/subject-chain.md)** A post gets published, labeled, hidden, attested, and challenged — five steps, all legible.
 
+## Where RPP fits today
+
+RPP is not currently a service implementation, and you don't need to "adopt" it.
+
+Its near-term role is as a **projection vocabulary** for subject-centered reviewability views over the outputs of existing observatories — particularly labelwatch (label emissions, negations, conflicts, per-subject slices) and driftwatch (claim persistence, mutation, receipted decisions).
+
+The useful artifact isn't RPP adoption. It's a rendered subject chain showing:
+
+- what public signals exist
+- what claims and actions can be reconstructed from them
+- where rationale, challenge, appeal, or review records are absent
+
+That last category — the gaps — is the point. RPP makes the missing review surface legible.
+
+See [docs/rpp-projection.md](docs/rpp-projection.md) for how observatory outputs map into RPP records.
+
 ## Why third-party
 
 If Bluesky built this, it would always be under pressure to become a house view or a liability shield. Third-party means:
@@ -58,6 +74,7 @@ The viewer loads example records, indexes them by subject, and serves a chain vi
 2. **[examples/subject-chain.md](examples/subject-chain.md)** — one complete lifecycle, start to finish
 3. **[ARCHITECTURE.md](ARCHITECTURE.md)** — record types, state model, ingest paths, trust boundaries
 4. Then, depending on what you're building:
+   - Projecting labelwatch/driftwatch outputs into RPP shape? → [docs/rpp-projection.md](docs/rpp-projection.md)
    - Integrating operator signals? → [docs/operator-attestation-api.md](docs/operator-attestation-api.md)
    - Importing from existing systems (Ozone, labelers)? → [docs/PROVENANCE-AND-ADAPTERS.md](docs/PROVENANCE-AND-ADAPTERS.md)
    - Understanding the design philosophy? → [docs/RATIONALE.md](docs/RATIONALE.md)
