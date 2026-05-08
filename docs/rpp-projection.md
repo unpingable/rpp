@@ -17,9 +17,11 @@ The useful artifact this enables is a rendered subject chain showing:
 
 - what public signals exist for a subject
 - what claims and actions can be reconstructed from them
-- where rationale, challenge, appeal, or review records are absent
+- where rationale, challenge, appeal, or review records are not visible in public sources
 
-That last category — the gaps — is the point. The chain shows where reviewability stops.
+That last category — the gaps — is the point.
+
+**Load-bearing principle:** the viewer shows where the *record* stops, not where reality stops. RPP is not proving absence of governance. It is proving absence of reviewable public record. Every gap marker is a claim about record visibility, never a claim about what did or did not happen out of view.
 
 ## Direction
 
@@ -93,16 +95,18 @@ Challenges are usually **absences**, not records. The projection emits gap marke
 
 The viewer's job, if one is ever built, is to highlight what's missing. Standard gap categories:
 
+Each gap is a statement about what is **not visible from public sources at projection time**. None of them assert that the corresponding process did not occur — only that no record of it surfaced.
+
 | Gap | Meaning |
 |-----|---------|
-| `rationale_absent` | Claim/action exists; no published reasoning is reachable |
-| `evidence_absent` | Claim cites no inspectable evidence |
-| `challenge_absent` | No public challenge record for a claim that has had real consequence |
-| `review_absent` | No record of human or process review |
-| `appeal_absent` | Subject has no visible appeal channel or no record of one being used |
-| `provenance_unclear` | Source labeler/operator cannot be authenticated from public data |
+| `rationale_absent` | No published rationale visible for this claim/action in this projection |
+| `evidence_absent` | No inspectable evidence reference visible for this claim |
+| `challenge_absent` | No public challenge record visible for a claim that has had real consequence |
+| `review_absent` | No public review record visible for this claim/action |
+| `appeal_absent` | No public appeal channel or appeal-use record visible for this subject |
+| `provenance_unclear` | Source labeler/operator cannot be authenticated from public data available to this projection |
 
-These are projection-time annotations, not RPP records. They describe what would be needed for the subject's chain to be reviewable end-to-end, not what is.
+These are projection-time annotations, not RPP records. They describe what would be needed for the subject's chain to be reviewable end-to-end *on the public record*, not what is.
 
 ## What this is NOT
 
@@ -110,6 +114,8 @@ These are projection-time annotations, not RPP records. They describe what would
 - Not authorization to build the connector. This memo exists so that *if* a connector is ever built, it has a vocabulary to use. The memo is the deliverable.
 - Not a replacement for the operator attestation API ([docs/operator-attestation-api.md](operator-attestation-api.md)) or for native RPP publication. It describes a Tier 0 use of RPP vocabulary over already-public observatory output.
 - Not a dependency declaration. labelwatch and driftwatch are named because they are the most natural projection sources today, not because RPP requires them.
+
+**Naming discipline:** if a viewer is ever built, it is an *exhibit*, not a service. Acceptable name: "RPP Subject Chain Viewer." Names to refuse: `rppd`, `rpp-live`, `rpp-connect`, `moderation-receipt-service`, anything ending in `-service` or `-daemon`. Names with daemon eggs in them tend to hatch.
 
 ## Open questions
 
