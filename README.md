@@ -73,7 +73,8 @@ The viewer loads example records, indexes them by subject, and serves a chain vi
 1. **This README** — the problem and the shape of the solution
 2. **[examples/subject-chain.md](examples/subject-chain.md)** — one complete lifecycle, start to finish
 3. **[ARCHITECTURE.md](ARCHITECTURE.md)** — record types, state model, ingest paths, trust boundaries
-4. Then, depending on what you're building:
+4. **[docs/RPP-000-publication-vs-validity.md](docs/RPP-000-publication-vs-validity.md)** — the layer split: RPP publishes notice, WLP decides validity, neither speaks for the other
+5. Then, depending on what you're building:
    - Projecting labelwatch/driftwatch outputs into RPP shape? → [docs/rpp-projection.md](docs/rpp-projection.md)
    - Integrating operator signals? → [docs/operator-attestation-api.md](docs/operator-attestation-api.md)
    - Importing from existing systems (Ozone, labelers)? → [docs/PROVENANCE-AND-ADAPTERS.md](docs/PROVENANCE-AND-ADAPTERS.md)
