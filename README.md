@@ -25,6 +25,16 @@ The result: for any post, account, or URI, you can pull up the full chain — wh
 
 **[See the full story in one walkthrough.](examples/subject-chain.md)** A post gets published, labeled, hidden, attested, and challenged — five steps, all legible.
 
+## Quick start
+
+```bash
+pip install -e ".[dev]"
+rpp-viewer
+# visit http://localhost:8400
+```
+
+The viewer loads example records, indexes them by subject, and serves a chain view. Try the subject page for `at://did:plc:alice/app.bsky.feed.post/3abc123` to see a claim → action → challenge flow.
+
 ## Where RPP fits today
 
 RPP is not currently a service implementation, and you don't need to "adopt" it.
@@ -57,16 +67,6 @@ ATProto handles identity, publication, and distribution. RPP adds claim structur
 Five layers: publish (ATProto records) → ingest (firehose, operator API, adapters) → kernel (Rust validation and indexing) → service (Python API) → render (subject-centric web views).
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the full picture.
-
-## Quick start
-
-```bash
-pip install -e ".[dev]"
-rpp-viewer
-# visit http://localhost:8400
-```
-
-The viewer loads example records, indexes them by subject, and serves a chain view. Try the subject page for `at://did:plc:alice/app.bsky.feed.post/3abc123` to see a claim → action → challenge flow.
 
 ## Reading order
 
