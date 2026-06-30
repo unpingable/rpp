@@ -1,6 +1,61 @@
 """Tests for the RPP subject-state index."""
 
-from rpp.index import Record, SubjectIndex, normalize
+from rpp.index import Record, SubjectIndex, Validity, normalize
+
+
+def _claim(**overrides):
+    data = {
+        "$type": "zone.neutral.rpp.claim",
+        "issuer": "did:plc:test",
+        "subject": {"subjectType": "did", "value": "did:plc:target"},
+        "claimType": "classification",
+        "evidenceClass": "direct_observation",
+        "createdAt": "2026-04-12T00:00:00Z",
+    }
+    data.update(overrides)
+    return normalize(data)
+
+
+def test_validity_defaults_to_unchecked():
+    # RPP carries the path; it does not judge it. No checker receipt -> unchecked.
+    r = _claim()
+    assert r.validity_status == "unchecked"
+    assert r.validity_source_ref is None
+
+
+def test_self_asserted_status_never_promotes_validity():
+    # The load-bearing invariant: a producer narrating its own standing — even
+    # an admissible-looking lifecycle — cannot move checked validity off unchecked.
+    r = _claim(status="active")
+    assert r.lifecycle == "active"
+    assert r.validity_status == "unchecked"
+
+
+def test_verdict_like_lifecycle_is_flagged_but_not_validity():
+    # A self-asserted "revoked" is a claim, not an adjudication.
+    r = _claim(status="revoked")
+    assert r.lifecycle == "revoked"
+    assert r.lifecycle_is_verdict_like is True
+    assert r.validity_status == "unchecked"
+
+
+def test_author_lifecycle_is_not_verdict_like():
+    assert _claim(status="withdrawn").lifecycle_is_verdict_like is False
+    assert _claim(status="active").lifecycle_is_verdict_like is False
+
+
+def test_status_alias_equals_lifecycle():
+    # Back-compat shim for the viewer template.
+    r = _claim(status="superseded")
+    assert r.status == r.lifecycle == "superseded"
+
+
+def test_attached_checker_receipt_reports_checked_validity():
+    # Only a reader, citing a checker, may report check-state.
+    r = _claim(status="active")
+    r.checked_validity = Validity(status="checked_pass", source_ref="at://wlp/receipt/1")
+    assert r.validity_status == "checked_pass"
+    assert r.validity_source_ref == "at://wlp/receipt/1"
 
 
 def test_normalize_claim():

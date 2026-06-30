@@ -63,7 +63,20 @@ def create_app(examples_dir: Path | None = None) -> Flask:
         records = index.get_subject(ref)
         if not records:
             abort(404)
-        return jsonify([{"kind": r.kind, "anchor_id": r.anchor_id, "raw": r.raw} for r in records])
+        return jsonify([
+            {
+                "kind": r.kind,
+                "anchor_id": r.anchor_id,
+                # Two distinct axes, never conflated: what the record claims
+                # about itself vs. what (if anything) a checker has verified.
+                "lifecycle": r.lifecycle,
+                "lifecycle_is_verdict_like": r.lifecycle_is_verdict_like,
+                "validity_status": r.validity_status,
+                "validity_source_ref": r.validity_source_ref,
+                "raw": r.raw,
+            }
+            for r in records
+        ])
 
     return app
 

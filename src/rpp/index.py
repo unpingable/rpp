@@ -24,6 +24,30 @@ TYPE_TO_KIND = {
 VALID_KINDS = set(TYPE_TO_KIND.values())
 
 
+# Self-authored `status` values look like two different things. Authorship and
+# supersession are acts the producer is entitled to assert about its own object.
+# The rest read like verdicts — computed (TTL), adjudicated (challenge outcome),
+# or otherwise decided elsewhere. A producer asserting a verdict about itself is
+# not authority; the reader must surface it as a *claimed* lifecycle state, never
+# as checked admissibility. See docs/WDC-ADMISSIBILITY-BRIDGE.md.
+VERDICT_LIKE_STATUS = frozenset(
+    {"revoked", "expired", "upheld", "rejected", "inadmissible"}
+)
+
+
+@dataclass
+class Validity:
+    """A checked-admissibility result, attached out-of-band by a conforming
+    validator (WLP / Governor / a witnessed-path checker).
+
+    This NEVER comes from the record itself. A record may assert its lifecycle;
+    only a checker may report check-state, and only by citing itself.
+    """
+
+    status: str  # checked_pass | checked_fail | not_supported
+    source_ref: str  # citation to the checker receipt this verdict rests on
+
+
 @dataclass
 class Record:
     """A normalized RPP record."""
@@ -31,6 +55,10 @@ class Record:
     kind: str
     raw: dict[str, Any]
     anchor_id: str = ""
+    # Out-of-band check result. Populated only by a validator that consulted a
+    # named checker receipt — never derived from `raw["status"]`. Absent means
+    # unchecked, which is the honest default: RPP carries the path, does not judge it.
+    checked_validity: Validity | None = None
 
     def __post_init__(self):
         if not self.anchor_id:
@@ -53,8 +81,37 @@ class Record:
         return self.raw.get("issuer") or self.raw.get("challenger", "unknown")
 
     @property
-    def status(self) -> str:
+    def lifecycle(self) -> str:
+        """Record-authored lifecycle state. This is the producer's claim about
+        its own object (active/withdrawn/superseded/...), not a verdict about it.
+        Never treat as admissibility — see `validity_status`."""
         return self.raw.get("status", "unknown")
+
+    @property
+    def lifecycle_is_verdict_like(self) -> bool:
+        """True when the self-authored lifecycle reads like an external verdict
+        (revoked/expired/upheld/...). Surfaced so a reader can mark it as a
+        *claimed* state, not a checked one."""
+        return self.lifecycle in VERDICT_LIKE_STATUS
+
+    @property
+    def status(self) -> str:
+        """Back-compat alias for `lifecycle`. The honest name is `lifecycle`;
+        this remains for the viewer template. It is NOT validity."""
+        return self.lifecycle
+
+    @property
+    def validity_status(self) -> str:
+        """Checked admissibility. The iron rule: `unchecked` unless a conforming
+        validator receipt has been attached as `checked_validity`. RPP records
+        may assert lifecycle; only a reader may report check-state, by citing a
+        checker. Self-authored `status` can never promote this off `unchecked`."""
+        return self.checked_validity.status if self.checked_validity else "unchecked"
+
+    @property
+    def validity_source_ref(self) -> str | None:
+        """The checker receipt this validity rests on, or None if unchecked."""
+        return self.checked_validity.source_ref if self.checked_validity else None
 
     @property
     def created_at(self) -> str:

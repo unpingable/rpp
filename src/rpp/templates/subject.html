@@ -45,6 +45,17 @@
   .status.withdrawn, .status.revoked, .status.superseded, .status.reversed {
     color: var(--withdrawn); border: 1px solid var(--withdrawn); }
 
+  /* Validity is a separate axis from lifecycle. Default is a dashed
+     "unchecked" badge: RPP carries the path, it does not judge it. */
+  .validity { display: inline-block; margin-left: 0.25rem; padding: 0.1rem 0.4rem;
+    font-size: 0.75rem; border-radius: 2px; color: #8a8a8a; border: 1px dashed #8a8a8a; }
+  .validity.checked_pass { color: var(--active); border: 1px solid var(--active); }
+  .validity.checked_fail { color: var(--withdrawn); border: 1px solid var(--withdrawn); }
+  /* A self-asserted status that reads like a verdict (revoked/expired/upheld/...). */
+  .claimed { display: inline-block; margin-left: 0.25rem; padding: 0.1rem 0.4rem;
+    font-size: 0.75rem; border-radius: 2px; color: var(--withdrawn);
+    border: 1px dotted var(--withdrawn); }
+
   .confidence-bar { display: inline-block; width: 60px; height: 8px; background: var(--border);
                     position: relative; vertical-align: middle; margin-left: 0.3rem; }
   .confidence-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--fg); }
@@ -78,6 +89,8 @@
           <span class="field-label">type</span>
           <span class="field-value">{{ r.raw.claimType }}</span>
           <span class="status {{ r.status }}">{{ r.status }}</span>
+          {% if r.lifecycle_is_verdict_like %}<span class="claimed" title="Self-asserted verdict-like status — a producer claim, not a checked result.">claimed</span>{% endif %}
+          <span class="validity {{ r.validity_status }}" title="Checked admissibility. 'unchecked' until a validator receipt is attached — RPP carries the path, it does not judge it.">{{ r.validity_status }}{% if r.validity_source_ref %} · {{ r.validity_source_ref }}{% endif %}</span>
         </div>
         {% if r.raw.value %}
         <div class="field">
@@ -149,6 +162,8 @@
           <span class="field-label">type</span>
           <span class="field-value">{{ r.raw.attestationType }}</span>
           <span class="status {{ r.status }}">{{ r.status }}</span>
+          {% if r.lifecycle_is_verdict_like %}<span class="claimed" title="Self-asserted verdict-like status — a producer claim, not a checked result.">claimed</span>{% endif %}
+          <span class="validity {{ r.validity_status }}" title="Checked admissibility. 'unchecked' until a validator receipt is attached — RPP carries the path, it does not judge it.">{{ r.validity_status }}{% if r.validity_source_ref %} · {{ r.validity_source_ref }}{% endif %}</span>
         </div>
         <div class="field">
           <span class="field-label">basis</span>
@@ -193,6 +208,8 @@
           <span class="field-label">action</span>
           <span class="field-value">{{ r.raw.actionType }}</span>
           <span class="status {{ r.status }}">{{ r.status }}</span>
+          {% if r.lifecycle_is_verdict_like %}<span class="claimed" title="Self-asserted verdict-like status — a producer claim, not a checked result.">claimed</span>{% endif %}
+          <span class="validity {{ r.validity_status }}" title="Checked admissibility. 'unchecked' until a validator receipt is attached — RPP carries the path, it does not judge it.">{{ r.validity_status }}{% if r.validity_source_ref %} · {{ r.validity_source_ref }}{% endif %}</span>
         </div>
         {% if r.raw.scope %}
         <div class="field">
@@ -244,6 +261,8 @@
           <span class="field-label">challenger</span>
           <span class="field-value issuer">{{ r.raw.challenger }}</span>
           <span class="status {{ r.status }}">{{ r.status }}</span>
+          {% if r.lifecycle_is_verdict_like %}<span class="claimed" title="Self-asserted verdict-like status — a producer claim, not a checked result.">claimed</span>{% endif %}
+          <span class="validity {{ r.validity_status }}" title="Checked admissibility. 'unchecked' until a validator receipt is attached — RPP carries the path, it does not judge it.">{{ r.validity_status }}{% if r.validity_source_ref %} · {{ r.validity_source_ref }}{% endif %}</span>
         </div>
         {% if r.raw.targetRef %}
         <div class="field">
